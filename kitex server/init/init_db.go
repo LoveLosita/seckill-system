@@ -9,7 +9,7 @@ import (
 var Db *gorm.DB
 
 func ConnectDB() error {
-	dsn := "root:123456@tcp(127.0.0.1:3306)/link_shorten?charset=utf8mb4&parseTime=True&loc=Local&timeout=30s"
+	dsn := "root:123456@tcp(127.0.0.1:3306)/seckill_system?charset=utf8mb4&parseTime=True&loc=Local&timeout=30s"
 	//第一部分：连接数据库，并检测其连接正常性
 	var err error
 	Db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
