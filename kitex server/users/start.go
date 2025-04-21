@@ -2,7 +2,7 @@ package users
 
 import (
 	"github.com/cloudwego/kitex/server"
-	"kitex-server/init"
+	"kitex-server/inits"
 	user "kitex-server/users/kitex_gen/user/userservice"
 	"log"
 	"net"
@@ -10,12 +10,12 @@ import (
 
 func Start() {
 	//1.连接数据库
-	err := init.ConnectDB()
+	err := inits.ConnectDB()
 	if err != nil {
 		log.Fatalf("init.ConnectDB error: %v", err)
 	}
 	//2.连接redis
-	err = init.InitRedis()
+	err = inits.InitRedis()
 	if err != nil {
 		log.Fatalf("init.InitRedis error: %v", err)
 	}

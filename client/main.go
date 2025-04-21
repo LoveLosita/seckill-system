@@ -1,1 +1,7 @@
-package client
+package main
+
+import "client/cmd"
+
+func main() {
+	cmd.Start()
+}

@@ -3,7 +3,7 @@ package dao
 import (
 	"errors"
 	"gorm.io/gorm"
-	"kitex-server/init"
+	"kitex-server/inits"
 	"kitex-server/users/kitex_gen/user"
 	"kitex-server/users/model"
 	"kitex-server/users/response"
@@ -11,7 +11,7 @@ import (
 
 func GetUserHashedPassword(userName string) (string, user.Status) {
 	var pwdUser model.User
-	result := init.Db.Table("users").Where("username = ?", userName).Find(&pwdUser)
+	result := inits.Db.Table("user").Where("username = ?", userName).Find(&pwdUser)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return "", response.WrongUsrName
@@ -23,7 +23,7 @@ func GetUserHashedPassword(userName string) (string, user.Status) {
 }
 
 func InsertUserInfo(newUser user.UserRegisterRequest) user.Status {
-	result := init.Db.Table("users").Create(&newUser)
+	result := inits.Db.Table("user").Create(&newUser)
 	if result.Error != nil {
 		return response.InternalErr(result.Error)
 	}
@@ -32,7 +32,7 @@ func InsertUserInfo(newUser user.UserRegisterRequest) user.Status {
 
 func IfUsernameExists(name string) (bool, user.Status) {
 	var nameUser model.User
-	result := init.Db.Table("users").First(&nameUser, "username = ?", name)
+	result := inits.Db.Table("user").First(&nameUser, "username = ?", name)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return false, user.Status{}
@@ -44,7 +44,7 @@ func IfUsernameExists(name string) (bool, user.Status) {
 
 func IfEmailExists(email string) (bool, user.Status) {
 	var emailUser model.User
-	result := init.Db.Table("users").First(&emailUser, "email = ?", email)
+	result := inits.Db.Table("user").First(&emailUser, "email = ?", email)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return false, user.Status{}
@@ -56,7 +56,7 @@ func IfEmailExists(email string) (bool, user.Status) {
 
 func IfPhoneNumberExists(phoneNumber string) (bool, user.Status) {
 	var phoneUser model.User
-	result := init.Db.Table("users").First(&phoneUser, "phone_number = ?", phoneNumber)
+	result := inits.Db.Table("user").First(&phoneUser, "phone_number = ?", phoneNumber)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return false, user.Status{}
@@ -68,7 +68,7 @@ func IfPhoneNumberExists(phoneNumber string) (bool, user.Status) {
 
 func GetUserIDByName(name string) (int64, user.Status) {
 	var userID int64
-	result := init.Db.Table("users").Select("id").Where("username = ?", name).Scan(&userID)
+	result := inits.Db.Table("user").Select("id").Where("username = ?", name).Scan(&userID)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return 0, response.WrongUsrName
