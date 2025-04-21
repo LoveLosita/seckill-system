@@ -1,4 +1,4 @@
-package response
+package user_resp
 
 import "kitex-server/users/kitex_gen/user"
 

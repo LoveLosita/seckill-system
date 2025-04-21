@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/golang-jwt/jwt/v4"
 	"kitex-server/users/kitex_gen/user"
-	"kitex-server/users/response"
+	"kitex-server/users/user_resp"
 )
 
 var accessKey = AccessKey
@@ -12,7 +12,7 @@ var accessKey = AccessKey
 func CheckJwtToken(token string) (int, user.Status) {
 	//fmt.Println(string(tokenString))//测试用
 	if string(token) == "" { //没有token
-		return -1, response.MissingToken
+		return -1, user_resp.MissingToken
 	}
 	// 解析并验证 Token
 	token2, err := jwt.Parse(string(token), func(token *jwt.Token) (interface{}, error) {
@@ -23,7 +23,7 @@ func CheckJwtToken(token string) (int, user.Status) {
 		return accessKey, nil
 	})
 	if err != nil || !token2.Valid { //token无效
-		return -1, response.InvalidToken
+		return -1, user_resp.InvalidToken
 	}
 
 	// 将解析出的用户信息存入上下文，供后续使用
@@ -31,7 +31,7 @@ func CheckJwtToken(token string) (int, user.Status) {
 		// 获取 token_type 判断类型
 		tokenType, ok := claims["token_type"].(string)
 		if !ok {
-			return -1, response.InvalidClaims
+			return -1, user_resp.InvalidClaims
 		}
 		// 根据 token_type 做不同的处理
 		if tokenType == "access_token" {
@@ -41,9 +41,9 @@ func CheckJwtToken(token string) (int, user.Status) {
 			floatID := claims["user_id"].(float64)
 			return int(floatID), user.Status{}
 		} else {
-			return -1, response.WrongTokenType
+			return -1, user_resp.WrongTokenType
 		}
 	} else {
-		return -1, response.InvalidToken
+		return -1, user_resp.InvalidToken
 	}
 }

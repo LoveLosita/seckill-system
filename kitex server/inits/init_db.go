@@ -4,7 +4,6 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"gorm.io/gorm/schema"
 )
 
 var Db *gorm.DB
@@ -15,9 +14,6 @@ func ConnectDB() error {
 	var err error
 	Db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Silent),
-		NamingStrategy: schema.NamingStrategy{
-			SingularTable: true, // ✅ 禁用复数表名
-		},
 	}) //链接数据库
 	if err != nil {
 		return err

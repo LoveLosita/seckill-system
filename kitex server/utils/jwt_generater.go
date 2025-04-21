@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/golang-jwt/jwt/v4"
 	"kitex-server/users/kitex_gen/user"
-	"kitex-server/users/response"
+	"kitex-server/users/user_resp"
 	"time"
 )
 
@@ -58,11 +58,11 @@ func ValidateRefreshToken(tokenString string) (*jwt.Token, user.Status) {
 	// 进一步检查载荷中 token_type 是否正确
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		return nil, response.InvalidClaims
+		return nil, user_resp.InvalidClaims
 	}
 	// 检查 token_type 是否是 refresh_token
 	if claimType, ok := claims["token_type"].(string); !ok || claimType != "refresh_token" {
-		return nil, response.WrongTokenType
+		return nil, user_resp.WrongTokenType
 	}
 	return token, user.Status{}
 }
