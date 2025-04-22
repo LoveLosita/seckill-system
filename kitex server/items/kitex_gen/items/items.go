@@ -248,13 +248,13 @@ func (p *Status) Field2DeepEqual(src string) bool {
 }
 
 type Item struct {
-	Id        *string `thrift:"id,1,optional" frugal:"1,optional,string" json:"id,omitempty"`
-	Name      *string `thrift:"name,2,optional" frugal:"2,optional,string" json:"name,omitempty"`
-	Price     *string `thrift:"price,3,optional" frugal:"3,optional,string" json:"price,omitempty"`
-	Stock     *string `thrift:"stock,4,optional" frugal:"4,optional,string" json:"stock,omitempty"`
-	Intro     *string `thrift:"intro,5,optional" frugal:"5,optional,string" json:"intro,omitempty"`
-	CreatedAt *string `thrift:"created_at,6,optional" frugal:"6,optional,string" json:"created_at,omitempty"`
-	UpdatedAt *string `thrift:"updated_at,7,optional" frugal:"7,optional,string" json:"updated_at,omitempty"`
+	Id        *int64   `thrift:"id,1,optional" frugal:"1,optional,i64" json:"id,omitempty"`
+	Name      *string  `thrift:"name,2,optional" frugal:"2,optional,string" json:"name,omitempty"`
+	Price     *float64 `thrift:"price,3,optional" frugal:"3,optional,double" json:"price,omitempty"`
+	Stock     *int64   `thrift:"stock,4,optional" frugal:"4,optional,i64" json:"stock,omitempty"`
+	Intro     *string  `thrift:"intro,5,optional" frugal:"5,optional,string" json:"intro,omitempty"`
+	CreatedAt *int64   `thrift:"created_at,6,optional" frugal:"6,optional,i64" json:"created_at,omitempty"`
+	UpdatedAt *int64   `thrift:"updated_at,7,optional" frugal:"7,optional,i64" json:"updated_at,omitempty"`
 }
 
 func NewItem() *Item {
@@ -264,9 +264,9 @@ func NewItem() *Item {
 func (p *Item) InitDefault() {
 }
 
-var Item_Id_DEFAULT string
+var Item_Id_DEFAULT int64
 
-func (p *Item) GetId() (v string) {
+func (p *Item) GetId() (v int64) {
 	if !p.IsSetId() {
 		return Item_Id_DEFAULT
 	}
@@ -282,18 +282,18 @@ func (p *Item) GetName() (v string) {
 	return *p.Name
 }
 
-var Item_Price_DEFAULT string
+var Item_Price_DEFAULT float64
 
-func (p *Item) GetPrice() (v string) {
+func (p *Item) GetPrice() (v float64) {
 	if !p.IsSetPrice() {
 		return Item_Price_DEFAULT
 	}
 	return *p.Price
 }
 
-var Item_Stock_DEFAULT string
+var Item_Stock_DEFAULT int64
 
-func (p *Item) GetStock() (v string) {
+func (p *Item) GetStock() (v int64) {
 	if !p.IsSetStock() {
 		return Item_Stock_DEFAULT
 	}
@@ -309,42 +309,42 @@ func (p *Item) GetIntro() (v string) {
 	return *p.Intro
 }
 
-var Item_CreatedAt_DEFAULT string
+var Item_CreatedAt_DEFAULT int64
 
-func (p *Item) GetCreatedAt() (v string) {
+func (p *Item) GetCreatedAt() (v int64) {
 	if !p.IsSetCreatedAt() {
 		return Item_CreatedAt_DEFAULT
 	}
 	return *p.CreatedAt
 }
 
-var Item_UpdatedAt_DEFAULT string
+var Item_UpdatedAt_DEFAULT int64
 
-func (p *Item) GetUpdatedAt() (v string) {
+func (p *Item) GetUpdatedAt() (v int64) {
 	if !p.IsSetUpdatedAt() {
 		return Item_UpdatedAt_DEFAULT
 	}
 	return *p.UpdatedAt
 }
-func (p *Item) SetId(val *string) {
+func (p *Item) SetId(val *int64) {
 	p.Id = val
 }
 func (p *Item) SetName(val *string) {
 	p.Name = val
 }
-func (p *Item) SetPrice(val *string) {
+func (p *Item) SetPrice(val *float64) {
 	p.Price = val
 }
-func (p *Item) SetStock(val *string) {
+func (p *Item) SetStock(val *int64) {
 	p.Stock = val
 }
 func (p *Item) SetIntro(val *string) {
 	p.Intro = val
 }
-func (p *Item) SetCreatedAt(val *string) {
+func (p *Item) SetCreatedAt(val *int64) {
 	p.CreatedAt = val
 }
-func (p *Item) SetUpdatedAt(val *string) {
+func (p *Item) SetUpdatedAt(val *int64) {
 	p.UpdatedAt = val
 }
 
@@ -406,7 +406,7 @@ func (p *Item) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -422,7 +422,7 @@ func (p *Item) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 3:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.DOUBLE {
 				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -430,7 +430,7 @@ func (p *Item) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 4:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField4(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -446,7 +446,7 @@ func (p *Item) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 6:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -454,7 +454,7 @@ func (p *Item) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 7:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField7(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -492,8 +492,8 @@ ReadStructEndError:
 
 func (p *Item) ReadField1(iprot thrift.TProtocol) error {
 
-	var _field *string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field *int64
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
 		_field = &v
@@ -514,8 +514,8 @@ func (p *Item) ReadField2(iprot thrift.TProtocol) error {
 }
 func (p *Item) ReadField3(iprot thrift.TProtocol) error {
 
-	var _field *string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field *float64
+	if v, err := iprot.ReadDouble(); err != nil {
 		return err
 	} else {
 		_field = &v
@@ -525,8 +525,8 @@ func (p *Item) ReadField3(iprot thrift.TProtocol) error {
 }
 func (p *Item) ReadField4(iprot thrift.TProtocol) error {
 
-	var _field *string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field *int64
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
 		_field = &v
@@ -547,8 +547,8 @@ func (p *Item) ReadField5(iprot thrift.TProtocol) error {
 }
 func (p *Item) ReadField6(iprot thrift.TProtocol) error {
 
-	var _field *string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field *int64
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
 		_field = &v
@@ -558,8 +558,8 @@ func (p *Item) ReadField6(iprot thrift.TProtocol) error {
 }
 func (p *Item) ReadField7(iprot thrift.TProtocol) error {
 
-	var _field *string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field *int64
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
 		_field = &v
@@ -623,10 +623,10 @@ WriteStructEndError:
 
 func (p *Item) writeField1(oprot thrift.TProtocol) (err error) {
 	if p.IsSetId() {
-		if err = oprot.WriteFieldBegin("id", thrift.STRING, 1); err != nil {
+		if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.Id); err != nil {
+		if err := oprot.WriteI64(*p.Id); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -661,10 +661,10 @@ WriteFieldEndError:
 
 func (p *Item) writeField3(oprot thrift.TProtocol) (err error) {
 	if p.IsSetPrice() {
-		if err = oprot.WriteFieldBegin("price", thrift.STRING, 3); err != nil {
+		if err = oprot.WriteFieldBegin("price", thrift.DOUBLE, 3); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.Price); err != nil {
+		if err := oprot.WriteDouble(*p.Price); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -680,10 +680,10 @@ WriteFieldEndError:
 
 func (p *Item) writeField4(oprot thrift.TProtocol) (err error) {
 	if p.IsSetStock() {
-		if err = oprot.WriteFieldBegin("stock", thrift.STRING, 4); err != nil {
+		if err = oprot.WriteFieldBegin("stock", thrift.I64, 4); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.Stock); err != nil {
+		if err := oprot.WriteI64(*p.Stock); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -718,10 +718,10 @@ WriteFieldEndError:
 
 func (p *Item) writeField6(oprot thrift.TProtocol) (err error) {
 	if p.IsSetCreatedAt() {
-		if err = oprot.WriteFieldBegin("created_at", thrift.STRING, 6); err != nil {
+		if err = oprot.WriteFieldBegin("created_at", thrift.I64, 6); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.CreatedAt); err != nil {
+		if err := oprot.WriteI64(*p.CreatedAt); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -737,10 +737,10 @@ WriteFieldEndError:
 
 func (p *Item) writeField7(oprot thrift.TProtocol) (err error) {
 	if p.IsSetUpdatedAt() {
-		if err = oprot.WriteFieldBegin("updated_at", thrift.STRING, 7); err != nil {
+		if err = oprot.WriteFieldBegin("updated_at", thrift.I64, 7); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.UpdatedAt); err != nil {
+		if err := oprot.WriteI64(*p.UpdatedAt); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -792,14 +792,14 @@ func (p *Item) DeepEqual(ano *Item) bool {
 	return true
 }
 
-func (p *Item) Field1DeepEqual(src *string) bool {
+func (p *Item) Field1DeepEqual(src *int64) bool {
 
 	if p.Id == src {
 		return true
 	} else if p.Id == nil || src == nil {
 		return false
 	}
-	if strings.Compare(*p.Id, *src) != 0 {
+	if *p.Id != *src {
 		return false
 	}
 	return true
@@ -816,26 +816,26 @@ func (p *Item) Field2DeepEqual(src *string) bool {
 	}
 	return true
 }
-func (p *Item) Field3DeepEqual(src *string) bool {
+func (p *Item) Field3DeepEqual(src *float64) bool {
 
 	if p.Price == src {
 		return true
 	} else if p.Price == nil || src == nil {
 		return false
 	}
-	if strings.Compare(*p.Price, *src) != 0 {
+	if *p.Price != *src {
 		return false
 	}
 	return true
 }
-func (p *Item) Field4DeepEqual(src *string) bool {
+func (p *Item) Field4DeepEqual(src *int64) bool {
 
 	if p.Stock == src {
 		return true
 	} else if p.Stock == nil || src == nil {
 		return false
 	}
-	if strings.Compare(*p.Stock, *src) != 0 {
+	if *p.Stock != *src {
 		return false
 	}
 	return true
@@ -852,33 +852,33 @@ func (p *Item) Field5DeepEqual(src *string) bool {
 	}
 	return true
 }
-func (p *Item) Field6DeepEqual(src *string) bool {
+func (p *Item) Field6DeepEqual(src *int64) bool {
 
 	if p.CreatedAt == src {
 		return true
 	} else if p.CreatedAt == nil || src == nil {
 		return false
 	}
-	if strings.Compare(*p.CreatedAt, *src) != 0 {
+	if *p.CreatedAt != *src {
 		return false
 	}
 	return true
 }
-func (p *Item) Field7DeepEqual(src *string) bool {
+func (p *Item) Field7DeepEqual(src *int64) bool {
 
 	if p.UpdatedAt == src {
 		return true
 	} else if p.UpdatedAt == nil || src == nil {
 		return false
 	}
-	if strings.Compare(*p.UpdatedAt, *src) != 0 {
+	if *p.UpdatedAt != *src {
 		return false
 	}
 	return true
 }
 
 type GetItemInfoRequest struct {
-	Id string `thrift:"id,1,required" frugal:"1,required,string" json:"id"`
+	Id int64 `thrift:"id,1,required" frugal:"1,required,i64" json:"id"`
 }
 
 func NewGetItemInfoRequest() *GetItemInfoRequest {
@@ -888,10 +888,10 @@ func NewGetItemInfoRequest() *GetItemInfoRequest {
 func (p *GetItemInfoRequest) InitDefault() {
 }
 
-func (p *GetItemInfoRequest) GetId() (v string) {
+func (p *GetItemInfoRequest) GetId() (v int64) {
 	return p.Id
 }
-func (p *GetItemInfoRequest) SetId(val string) {
+func (p *GetItemInfoRequest) SetId(val int64) {
 	p.Id = val
 }
 
@@ -920,7 +920,7 @@ func (p *GetItemInfoRequest) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -965,8 +965,8 @@ RequiredFieldNotSetError:
 
 func (p *GetItemInfoRequest) ReadField1(iprot thrift.TProtocol) error {
 
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
 		_field = v
@@ -1005,10 +1005,10 @@ WriteStructEndError:
 }
 
 func (p *GetItemInfoRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("id", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Id); err != nil {
+	if err := oprot.WriteI64(p.Id); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1041,9 +1041,9 @@ func (p *GetItemInfoRequest) DeepEqual(ano *GetItemInfoRequest) bool {
 	return true
 }
 
-func (p *GetItemInfoRequest) Field1DeepEqual(src string) bool {
+func (p *GetItemInfoRequest) Field1DeepEqual(src int64) bool {
 
-	if strings.Compare(p.Id, src) != 0 {
+	if p.Id != src {
 		return false
 	}
 	return true
@@ -1662,10 +1662,10 @@ func (p *GetItemListResponse) Field2DeepEqual(src []*Item) bool {
 }
 
 type AddItemRequest struct {
-	Name  string `thrift:"name,1,required" frugal:"1,required,string" json:"name"`
-	Price string `thrift:"price,2,required" frugal:"2,required,string" json:"price"`
-	Stock string `thrift:"stock,3,required" frugal:"3,required,string" json:"stock"`
-	Intro string `thrift:"intro,4,required" frugal:"4,required,string" json:"intro"`
+	Name  string  `thrift:"name,1,required" frugal:"1,required,string" json:"name"`
+	Price float64 `thrift:"price,2,required" frugal:"2,required,double" json:"price"`
+	Stock int64   `thrift:"stock,3,required" frugal:"3,required,i64" json:"stock"`
+	Intro string  `thrift:"intro,4,required" frugal:"4,required,string" json:"intro"`
 }
 
 func NewAddItemRequest() *AddItemRequest {
@@ -1679,11 +1679,11 @@ func (p *AddItemRequest) GetName() (v string) {
 	return p.Name
 }
 
-func (p *AddItemRequest) GetPrice() (v string) {
+func (p *AddItemRequest) GetPrice() (v float64) {
 	return p.Price
 }
 
-func (p *AddItemRequest) GetStock() (v string) {
+func (p *AddItemRequest) GetStock() (v int64) {
 	return p.Stock
 }
 
@@ -1693,10 +1693,10 @@ func (p *AddItemRequest) GetIntro() (v string) {
 func (p *AddItemRequest) SetName(val string) {
 	p.Name = val
 }
-func (p *AddItemRequest) SetPrice(val string) {
+func (p *AddItemRequest) SetPrice(val float64) {
 	p.Price = val
 }
-func (p *AddItemRequest) SetStock(val string) {
+func (p *AddItemRequest) SetStock(val int64) {
 	p.Stock = val
 }
 func (p *AddItemRequest) SetIntro(val string) {
@@ -1743,7 +1743,7 @@ func (p *AddItemRequest) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 2:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.DOUBLE {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1752,7 +1752,7 @@ func (p *AddItemRequest) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 3:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1832,8 +1832,8 @@ func (p *AddItemRequest) ReadField1(iprot thrift.TProtocol) error {
 }
 func (p *AddItemRequest) ReadField2(iprot thrift.TProtocol) error {
 
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field float64
+	if v, err := iprot.ReadDouble(); err != nil {
 		return err
 	} else {
 		_field = v
@@ -1843,8 +1843,8 @@ func (p *AddItemRequest) ReadField2(iprot thrift.TProtocol) error {
 }
 func (p *AddItemRequest) ReadField3(iprot thrift.TProtocol) error {
 
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
 		_field = v
@@ -1923,10 +1923,10 @@ WriteFieldEndError:
 }
 
 func (p *AddItemRequest) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("price", thrift.STRING, 2); err != nil {
+	if err = oprot.WriteFieldBegin("price", thrift.DOUBLE, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Price); err != nil {
+	if err := oprot.WriteDouble(p.Price); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1940,10 +1940,10 @@ WriteFieldEndError:
 }
 
 func (p *AddItemRequest) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("stock", thrift.STRING, 3); err != nil {
+	if err = oprot.WriteFieldBegin("stock", thrift.I64, 3); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Stock); err != nil {
+	if err := oprot.WriteI64(p.Stock); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -2009,16 +2009,16 @@ func (p *AddItemRequest) Field1DeepEqual(src string) bool {
 	}
 	return true
 }
-func (p *AddItemRequest) Field2DeepEqual(src string) bool {
+func (p *AddItemRequest) Field2DeepEqual(src float64) bool {
 
-	if strings.Compare(p.Price, src) != 0 {
+	if p.Price != src {
 		return false
 	}
 	return true
 }
-func (p *AddItemRequest) Field3DeepEqual(src string) bool {
+func (p *AddItemRequest) Field3DeepEqual(src int64) bool {
 
-	if strings.Compare(p.Stock, src) != 0 {
+	if p.Stock != src {
 		return false
 	}
 	return true
@@ -2277,11 +2277,11 @@ func (p *AddItemResponse) Field2DeepEqual(src *Item) bool {
 }
 
 type UpdateItemRequest struct {
-	Id    *string `thrift:"id,1,optional" frugal:"1,optional,string" json:"id,omitempty"`
-	Name  *string `thrift:"name,2,optional" frugal:"2,optional,string" json:"name,omitempty"`
-	Price *string `thrift:"price,3,optional" frugal:"3,optional,string" json:"price,omitempty"`
-	Stock *string `thrift:"stock,4,optional" frugal:"4,optional,string" json:"stock,omitempty"`
-	Intro *string `thrift:"intro,5,optional" frugal:"5,optional,string" json:"intro,omitempty"`
+	Id    *int64   `thrift:"id,1,optional" frugal:"1,optional,i64" json:"id,omitempty"`
+	Name  *string  `thrift:"name,2,optional" frugal:"2,optional,string" json:"name,omitempty"`
+	Price *float64 `thrift:"price,3,optional" frugal:"3,optional,double" json:"price,omitempty"`
+	Stock *int64   `thrift:"stock,4,optional" frugal:"4,optional,i64" json:"stock,omitempty"`
+	Intro *string  `thrift:"intro,5,optional" frugal:"5,optional,string" json:"intro,omitempty"`
 }
 
 func NewUpdateItemRequest() *UpdateItemRequest {
@@ -2291,9 +2291,9 @@ func NewUpdateItemRequest() *UpdateItemRequest {
 func (p *UpdateItemRequest) InitDefault() {
 }
 
-var UpdateItemRequest_Id_DEFAULT string
+var UpdateItemRequest_Id_DEFAULT int64
 
-func (p *UpdateItemRequest) GetId() (v string) {
+func (p *UpdateItemRequest) GetId() (v int64) {
 	if !p.IsSetId() {
 		return UpdateItemRequest_Id_DEFAULT
 	}
@@ -2309,18 +2309,18 @@ func (p *UpdateItemRequest) GetName() (v string) {
 	return *p.Name
 }
 
-var UpdateItemRequest_Price_DEFAULT string
+var UpdateItemRequest_Price_DEFAULT float64
 
-func (p *UpdateItemRequest) GetPrice() (v string) {
+func (p *UpdateItemRequest) GetPrice() (v float64) {
 	if !p.IsSetPrice() {
 		return UpdateItemRequest_Price_DEFAULT
 	}
 	return *p.Price
 }
 
-var UpdateItemRequest_Stock_DEFAULT string
+var UpdateItemRequest_Stock_DEFAULT int64
 
-func (p *UpdateItemRequest) GetStock() (v string) {
+func (p *UpdateItemRequest) GetStock() (v int64) {
 	if !p.IsSetStock() {
 		return UpdateItemRequest_Stock_DEFAULT
 	}
@@ -2335,16 +2335,16 @@ func (p *UpdateItemRequest) GetIntro() (v string) {
 	}
 	return *p.Intro
 }
-func (p *UpdateItemRequest) SetId(val *string) {
+func (p *UpdateItemRequest) SetId(val *int64) {
 	p.Id = val
 }
 func (p *UpdateItemRequest) SetName(val *string) {
 	p.Name = val
 }
-func (p *UpdateItemRequest) SetPrice(val *string) {
+func (p *UpdateItemRequest) SetPrice(val *float64) {
 	p.Price = val
 }
-func (p *UpdateItemRequest) SetStock(val *string) {
+func (p *UpdateItemRequest) SetStock(val *int64) {
 	p.Stock = val
 }
 func (p *UpdateItemRequest) SetIntro(val *string) {
@@ -2399,7 +2399,7 @@ func (p *UpdateItemRequest) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2415,7 +2415,7 @@ func (p *UpdateItemRequest) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 3:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.DOUBLE {
 				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2423,7 +2423,7 @@ func (p *UpdateItemRequest) Read(iprot thrift.TProtocol) (err error) {
 				goto SkipFieldError
 			}
 		case 4:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField4(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -2469,8 +2469,8 @@ ReadStructEndError:
 
 func (p *UpdateItemRequest) ReadField1(iprot thrift.TProtocol) error {
 
-	var _field *string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field *int64
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
 		_field = &v
@@ -2491,8 +2491,8 @@ func (p *UpdateItemRequest) ReadField2(iprot thrift.TProtocol) error {
 }
 func (p *UpdateItemRequest) ReadField3(iprot thrift.TProtocol) error {
 
-	var _field *string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field *float64
+	if v, err := iprot.ReadDouble(); err != nil {
 		return err
 	} else {
 		_field = &v
@@ -2502,8 +2502,8 @@ func (p *UpdateItemRequest) ReadField3(iprot thrift.TProtocol) error {
 }
 func (p *UpdateItemRequest) ReadField4(iprot thrift.TProtocol) error {
 
-	var _field *string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field *int64
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
 		_field = &v
@@ -2570,10 +2570,10 @@ WriteStructEndError:
 
 func (p *UpdateItemRequest) writeField1(oprot thrift.TProtocol) (err error) {
 	if p.IsSetId() {
-		if err = oprot.WriteFieldBegin("id", thrift.STRING, 1); err != nil {
+		if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.Id); err != nil {
+		if err := oprot.WriteI64(*p.Id); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -2608,10 +2608,10 @@ WriteFieldEndError:
 
 func (p *UpdateItemRequest) writeField3(oprot thrift.TProtocol) (err error) {
 	if p.IsSetPrice() {
-		if err = oprot.WriteFieldBegin("price", thrift.STRING, 3); err != nil {
+		if err = oprot.WriteFieldBegin("price", thrift.DOUBLE, 3); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.Price); err != nil {
+		if err := oprot.WriteDouble(*p.Price); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -2627,10 +2627,10 @@ WriteFieldEndError:
 
 func (p *UpdateItemRequest) writeField4(oprot thrift.TProtocol) (err error) {
 	if p.IsSetStock() {
-		if err = oprot.WriteFieldBegin("stock", thrift.STRING, 4); err != nil {
+		if err = oprot.WriteFieldBegin("stock", thrift.I64, 4); err != nil {
 			goto WriteFieldBeginError
 		}
-		if err := oprot.WriteString(*p.Stock); err != nil {
+		if err := oprot.WriteI64(*p.Stock); err != nil {
 			return err
 		}
 		if err = oprot.WriteFieldEnd(); err != nil {
@@ -2695,14 +2695,14 @@ func (p *UpdateItemRequest) DeepEqual(ano *UpdateItemRequest) bool {
 	return true
 }
 
-func (p *UpdateItemRequest) Field1DeepEqual(src *string) bool {
+func (p *UpdateItemRequest) Field1DeepEqual(src *int64) bool {
 
 	if p.Id == src {
 		return true
 	} else if p.Id == nil || src == nil {
 		return false
 	}
-	if strings.Compare(*p.Id, *src) != 0 {
+	if *p.Id != *src {
 		return false
 	}
 	return true
@@ -2719,26 +2719,26 @@ func (p *UpdateItemRequest) Field2DeepEqual(src *string) bool {
 	}
 	return true
 }
-func (p *UpdateItemRequest) Field3DeepEqual(src *string) bool {
+func (p *UpdateItemRequest) Field3DeepEqual(src *float64) bool {
 
 	if p.Price == src {
 		return true
 	} else if p.Price == nil || src == nil {
 		return false
 	}
-	if strings.Compare(*p.Price, *src) != 0 {
+	if *p.Price != *src {
 		return false
 	}
 	return true
 }
-func (p *UpdateItemRequest) Field4DeepEqual(src *string) bool {
+func (p *UpdateItemRequest) Field4DeepEqual(src *int64) bool {
 
 	if p.Stock == src {
 		return true
 	} else if p.Stock == nil || src == nil {
 		return false
 	}
-	if strings.Compare(*p.Stock, *src) != 0 {
+	if *p.Stock != *src {
 		return false
 	}
 	return true
@@ -3002,7 +3002,7 @@ func (p *UpdateItemResponse) Field2DeepEqual(src *Item) bool {
 }
 
 type DeleteItemRequest struct {
-	Id string `thrift:"id,1,required" frugal:"1,required,string" json:"id"`
+	Id int64 `thrift:"id,1,required" frugal:"1,required,i64" json:"id"`
 }
 
 func NewDeleteItemRequest() *DeleteItemRequest {
@@ -3012,10 +3012,10 @@ func NewDeleteItemRequest() *DeleteItemRequest {
 func (p *DeleteItemRequest) InitDefault() {
 }
 
-func (p *DeleteItemRequest) GetId() (v string) {
+func (p *DeleteItemRequest) GetId() (v int64) {
 	return p.Id
 }
-func (p *DeleteItemRequest) SetId(val string) {
+func (p *DeleteItemRequest) SetId(val int64) {
 	p.Id = val
 }
 
@@ -3044,7 +3044,7 @@ func (p *DeleteItemRequest) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -3089,8 +3089,8 @@ RequiredFieldNotSetError:
 
 func (p *DeleteItemRequest) ReadField1(iprot thrift.TProtocol) error {
 
-	var _field string
-	if v, err := iprot.ReadString(); err != nil {
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
 		_field = v
@@ -3129,10 +3129,10 @@ WriteStructEndError:
 }
 
 func (p *DeleteItemRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("id", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Id); err != nil {
+	if err := oprot.WriteI64(p.Id); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -3165,9 +3165,9 @@ func (p *DeleteItemRequest) DeepEqual(ano *DeleteItemRequest) bool {
 	return true
 }
 
-func (p *DeleteItemRequest) Field1DeepEqual(src string) bool {
+func (p *DeleteItemRequest) Field1DeepEqual(src int64) bool {
 
-	if strings.Compare(p.Id, src) != 0 {
+	if p.Id != src {
 		return false
 	}
 	return true

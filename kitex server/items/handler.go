@@ -2,6 +2,8 @@ package items
 
 import (
 	"context"
+	"kitex-server/items/dao"
+	"kitex-server/items/item_resp"
 	items "kitex-server/items/kitex_gen/items"
 )
 
@@ -10,14 +12,43 @@ type ItemServiceImpl struct{}
 
 // GetItemInfo implements the ItemServiceImpl interface.
 func (s *ItemServiceImpl) GetItemInfo(ctx context.Context, req *items.GetItemInfoRequest) (resp *items.GetItemInfoResponse, err error) {
-	// TODO: Your code here...
-	return
+	var emptyStatus items.Status
+	item, status := dao.GetItemByID(req.Id)
+	if status != emptyStatus {
+		return &items.GetItemInfoResponse{Status: &status}, nil
+	}
+	var retItem items.Item
+	//类型转换
+	retItem.Id = &item.Id
+	retItem.Name = &item.Name
+	retItem.Price = &item.Price
+	retItem.Stock = &item.Stock
+	retItem.Intro = &item.Intro
+	unixCrAt := item.CreatedAt.Unix()
+	unixUpAt := item.UpdatedAt.Unix()
+	retItem.CreatedAt = &unixCrAt
+	retItem.UpdatedAt = &unixUpAt
+	return &items.GetItemInfoResponse{
+		Status: &item_resp.Ok,
+		Item:   &retItem,
+	}, nil
 }
 
 // GetItemList implements the ItemServiceImpl interface.
 func (s *ItemServiceImpl) GetItemList(ctx context.Context, req *items.GetItemListRequest) (resp *items.GetItemListResponse, err error) {
-	// TODO: Your code here...
-	return
+	var emptyStatus items.Status
+	itemList, status := dao.GetAllItems()
+	if status != emptyStatus {
+		return &items.GetItemListResponse{Status: &status}, nil
+	}
+	var ptrItemList []*items.Item
+	for i := range itemList {
+		ptrItemList = append(ptrItemList, &itemList[i])
+	}
+	return &items.GetItemListResponse{
+		Status: &item_resp.Ok,
+		Items:  ptrItemList,
+	}, nil
 }
 
 // AddItem implements the ItemServiceImpl interface.

@@ -13,4 +13,8 @@ var (
 		Code:    "10000",
 		Message: "ok",
 	}
+	ItemNotFound = items.Status{ //物品不存在
+		Code:    "41001",
+		Message: "item not found",
+	}
 )

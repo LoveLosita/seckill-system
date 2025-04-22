@@ -6,17 +6,17 @@ struct Status {
 }
 
 struct Item {
-  1: optional string id
+  1: optional i64 id
   2: optional string name
-  3: optional string price
-  4: optional string stock
+  3: optional double price
+  4: optional i64 stock
   5: optional string intro
-  6: optional string created_at
-  7: optional string updated_at
+  6: optional i64 created_at
+  7: optional i64 updated_at
 }
 
 struct GetItemInfoRequest {
-  1: required string id
+  1: required i64 id
 }
 
 struct GetItemInfoResponse {
@@ -34,8 +34,8 @@ struct GetItemListResponse {
 
 struct AddItemRequest {
   1: required string name
-  2: required string price
-  3: required string stock
+  2: required double price
+  3: required i64 stock
   4: required string intro
 }
 
@@ -45,10 +45,10 @@ struct AddItemResponse {
 }
 
 struct UpdateItemRequest {
-  1: optional string id
+  1: optional i64 id
   2: optional string name
-  3: optional string price
-  4: optional string stock
+  3: optional double price
+  4: optional i64 stock
   5: optional string intro
 }
 
@@ -58,7 +58,7 @@ struct UpdateItemResponse {
 }
 
 struct DeleteItemRequest {
-  1: required string id
+  1: required i64 id
 }
 
 struct DeleteItemResponse {
