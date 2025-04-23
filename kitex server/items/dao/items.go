@@ -9,8 +9,8 @@ import (
 	"kitex-server/items/model"
 )
 
-func InsertItem(item model.Item) items.Status {
-	result := inits.Db.Create(&item)
+func InsertItem(item items.AddItemRequest) items.Status {
+	result := inits.Db.Table("items").Create(&item)
 	if result.Error != nil {
 		return item_resp.InternalErr(result.Error)
 	}
@@ -19,7 +19,7 @@ func InsertItem(item model.Item) items.Status {
 
 func GetItemByID(itemID int64) (model.Item, items.Status) {
 	var item model.Item
-	result := inits.Db.First(&item, "id = ?", itemID)
+	result := inits.Db.Table("items").First(&item, "id = ?", itemID)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return model.Item{}, item_resp.ItemNotFound
@@ -29,8 +29,8 @@ func GetItemByID(itemID int64) (model.Item, items.Status) {
 	return item, items.Status{}
 }
 
-func UpdateItem(item model.Item) items.Status {
-	result := inits.Db.Updates(&item)
+func UpdateItem(item items.UpdateItemRequest) items.Status {
+	result := inits.Db.Table("items").Updates(&item)
 	if result.Error != nil {
 		return item_resp.InternalErr(result.Error)
 	}
@@ -38,7 +38,7 @@ func UpdateItem(item model.Item) items.Status {
 }
 
 func DeleteItem(itemID int64) items.Status {
-	result := inits.Db.Delete(&model.Item{}, itemID)
+	result := inits.Db.Table("items").Delete(&model.Item{}, itemID)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return item_resp.ItemNotFound
@@ -50,7 +50,7 @@ func DeleteItem(itemID int64) items.Status {
 
 func IfItemExists(itemID int64) (bool, items.Status) {
 	var item model.Item
-	result := inits.Db.First(&item, "id = ?", itemID)
+	result := inits.Db.Table("items").First(&item, "id = ?", itemID)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return false, items.Status{}
@@ -62,7 +62,7 @@ func IfItemExists(itemID int64) (bool, items.Status) {
 
 func GetAllItems() ([]items.Item, items.Status) {
 	var itemsList []items.Item
-	result := inits.Db.Find(&itemsList)
+	result := inits.Db.Table("items").Find(&itemsList)
 	if result.Error != nil {
 		return nil, item_resp.InternalErr(result.Error)
 	}

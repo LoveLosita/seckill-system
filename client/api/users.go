@@ -60,8 +60,10 @@ func UserRegister(ctx context.Context, c *app.RequestContext) {
 	if err != nil {
 		if errors.Is(err, context.DeadlineExceeded) {
 			c.JSON(consts.StatusInternalServerError, response.RpcServerConnectTimeOut)
+			return
 		} else {
 			c.JSON(consts.StatusInternalServerError, response.InternalError(err))
+			return
 		}
 	}
 	if resp != nil {

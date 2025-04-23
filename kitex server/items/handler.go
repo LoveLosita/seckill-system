@@ -28,6 +28,7 @@ func (s *ItemServiceImpl) GetItemInfo(ctx context.Context, req *items.GetItemInf
 	unixUpAt := item.UpdatedAt.Unix()
 	retItem.CreatedAt = &unixCrAt
 	retItem.UpdatedAt = &unixUpAt
+	//返回结果
 	return &items.GetItemInfoResponse{
 		Status: &item_resp.Ok,
 		Item:   &retItem,
@@ -53,18 +54,30 @@ func (s *ItemServiceImpl) GetItemList(ctx context.Context, req *items.GetItemLis
 
 // AddItem implements the ItemServiceImpl interface.
 func (s *ItemServiceImpl) AddItem(ctx context.Context, req *items.AddItemRequest) (resp *items.AddItemResponse, err error) {
-	// TODO: Your code here...
-	return
+	var emptyStatus items.Status
+	status := dao.InsertItem(*req)
+	if status != emptyStatus {
+		return &items.AddItemResponse{Status: &status}, nil
+	}
+	return &items.AddItemResponse{Status: &item_resp.Ok}, nil
 }
 
 // UpdateItem implements the ItemServiceImpl interface.
 func (s *ItemServiceImpl) UpdateItem(ctx context.Context, req *items.UpdateItemRequest) (resp *items.UpdateItemResponse, err error) {
-	// TODO: Your code here...
-	return
+	var emptyStatus items.Status
+	status := dao.UpdateItem(*req)
+	if status != emptyStatus {
+		return &items.UpdateItemResponse{Status: &status}, nil
+	}
+	return &items.UpdateItemResponse{Status: &item_resp.Ok}, nil
 }
 
 // DeleteItem implements the ItemServiceImpl interface.
 func (s *ItemServiceImpl) DeleteItem(ctx context.Context, req *items.DeleteItemRequest) (resp *items.DeleteItemResponse, err error) {
-	// TODO: Your code here...
-	return
+	var emptyStatus items.Status
+	status := dao.DeleteItem(req.Id)
+	if status != emptyStatus {
+		return &items.DeleteItemResponse{Status: &status}, nil
+	}
+	return &items.DeleteItemResponse{Status: &item_resp.Ok}, nil
 }
