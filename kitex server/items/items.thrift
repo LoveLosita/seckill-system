@@ -37,6 +37,7 @@ struct AddItemRequest {
   2: required double price
   3: required i64 stock
   4: required string intro
+  5: required string token
 }
 
 struct AddItemResponse {
@@ -50,6 +51,7 @@ struct UpdateItemRequest {
   3: optional double price
   4: optional i64 stock
   5: optional string intro
+  6: required string token
 }
 
 struct UpdateItemResponse {
@@ -59,6 +61,7 @@ struct UpdateItemResponse {
 
 struct DeleteItemRequest {
   1: required i64 id
+  2: required string token
 }
 
 struct DeleteItemResponse {

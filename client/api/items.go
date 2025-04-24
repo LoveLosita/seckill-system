@@ -88,6 +88,11 @@ func AddItem(ctx context.Context, c *app.RequestContext) {
 		c.JSON(consts.StatusBadRequest, response.WrongParamType)
 		return
 	}
+	token := c.GetHeader("Authorization")
+	strToken := string(token)
+	if string(token) != "" {
+		addItemReq.Token = strToken
+	}
 	//2.调用服务端接口
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5) //设置超时时间
 	defer cancel()
@@ -121,6 +126,18 @@ func UpdateItem(ctx context.Context, c *app.RequestContext) {
 		c.JSON(consts.StatusBadRequest, response.WrongParamType)
 		return
 	}
+	id := c.Query("id")
+	intID, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		c.JSON(consts.StatusBadRequest, response.WrongParamType)
+		return
+	}
+	updateItemReq.Id = &intID
+	token := c.GetHeader("Authorization")
+	strToken := string(token)
+	if string(token) != "" {
+		updateItemReq.Token = strToken
+	}
 	//2.调用服务端接口
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5) //设置超时时间
 	defer cancel()
@@ -148,10 +165,16 @@ func UpdateItem(ctx context.Context, c *app.RequestContext) {
 
 func DeleteItem(ctx context.Context, c *app.RequestContext) {
 	//1.从请求中获取参数
+	var deleteItemReq items.DeleteItemRequest
 	strID := c.Query("id")
 	if strID == "" {
 		c.JSON(consts.StatusBadRequest, response.MissingParam)
 		return
+	}
+	token := c.GetHeader("Authorization")
+	strToken := string(token)
+	if string(token) != "" {
+		deleteItemReq.Token = strToken
 	}
 	//2.调用服务端接口
 	intID, err := strconv.ParseInt(strID, 10, 64)
@@ -161,7 +184,6 @@ func DeleteItem(ctx context.Context, c *app.RequestContext) {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5) //设置超时时间
 	defer cancel()
-	var deleteItemReq items.DeleteItemRequest
 	deleteItemReq.Id = intID
 	resp, err := initclient.NewItemClient.DeleteItem(ctx, &deleteItemReq)
 	if err != nil {

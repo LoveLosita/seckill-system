@@ -17,8 +17,8 @@ func RegisterRouters() {
 	itemGroup := h.Group("/items")
 	itemGroup.GET("/get-list", api.GetItemList)
 	itemGroup.GET("/get-info", api.GetItemInfo)
-	itemGroup.POST("/add", api.AddItem)
+	itemGroup.PUT("/add", api.AddItem)
 	itemGroup.POST("/update", api.UpdateItem)
-	itemGroup.POST("/delete", api.DeleteItem)
+	itemGroup.DELETE("/delete", api.DeleteItem)
 	h.Spin()
 }

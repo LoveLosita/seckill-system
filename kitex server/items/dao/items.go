@@ -9,7 +9,7 @@ import (
 	"kitex-server/items/model"
 )
 
-func InsertItem(item items.AddItemRequest) items.Status {
+func InsertItem(item model.Item) items.Status {
 	result := inits.Db.Table("items").Create(&item)
 	if result.Error != nil {
 		return item_resp.InternalErr(result.Error)
@@ -29,8 +29,8 @@ func GetItemByID(itemID int64) (model.Item, items.Status) {
 	return item, items.Status{}
 }
 
-func UpdateItem(item items.UpdateItemRequest) items.Status {
-	result := inits.Db.Table("items").Updates(&item)
+func UpdateItem(item model.Item) items.Status {
+	result := inits.Db.Table("items").Where("id = ?", item.Id).Updates(&item)
 	if result.Error != nil {
 		return item_resp.InternalErr(result.Error)
 	}
@@ -60,8 +60,8 @@ func IfItemExists(itemID int64) (bool, items.Status) {
 	return true, items.Status{}
 }
 
-func GetAllItems() ([]items.Item, items.Status) {
-	var itemsList []items.Item
+func GetAllItems() ([]model.Item, items.Status) {
+	var itemsList []model.Item
 	result := inits.Db.Table("items").Find(&itemsList)
 	if result.Error != nil {
 		return nil, item_resp.InternalErr(result.Error)
