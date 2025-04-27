@@ -1,10 +1,12 @@
 package seckill
 
 import (
+	"github.com/cloudwego/kitex/server"
 	"kitex-server/inits"
 	"kitex-server/seckill/kafka"
 	seckill "kitex-server/seckill/kitex_gen/seckill/seckillservice"
 	"log"
+	"net"
 )
 
 func main() {
@@ -21,7 +23,11 @@ func main() {
 	//3.启动kafka
 	go kafka.StartKafkaConsumer()
 	//4.启动服务
-	svr := seckill.NewServer(new(SecKillServiceImpl))
+	addr, err := net.ResolveTCPAddr("tcp", "127.0.0.1:8891")
+	if err != nil {
+		log.Fatalf("net.ResolveTCPAddr error: %v", err)
+	}
+	svr := seckill.NewServer(new(SecKillServiceImpl), server.WithServiceAddr(addr))
 	err = svr.Run()
 	if err != nil {
 		log.Println(err.Error())

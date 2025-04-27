@@ -677,6 +677,7 @@ type CreateSecKillRequest struct {
 	Amount    *int64 `thrift:"amount,2,optional" frugal:"2,optional,i64" json:"amount,omitempty"`
 	StartTime *int64 `thrift:"start_time,3,optional" frugal:"3,optional,i64" json:"start_time,omitempty"`
 	EndTime   *int64 `thrift:"end_time,4,optional" frugal:"4,optional,i64" json:"end_time,omitempty"`
+	Token     string `thrift:"token,5,required" frugal:"5,required,string" json:"token"`
 }
 
 func NewCreateSecKillRequest() *CreateSecKillRequest {
@@ -716,6 +717,10 @@ func (p *CreateSecKillRequest) GetEndTime() (v int64) {
 	}
 	return *p.EndTime
 }
+
+func (p *CreateSecKillRequest) GetToken() (v string) {
+	return p.Token
+}
 func (p *CreateSecKillRequest) SetItemId(val int64) {
 	p.ItemId = val
 }
@@ -728,12 +733,16 @@ func (p *CreateSecKillRequest) SetStartTime(val *int64) {
 func (p *CreateSecKillRequest) SetEndTime(val *int64) {
 	p.EndTime = val
 }
+func (p *CreateSecKillRequest) SetToken(val string) {
+	p.Token = val
+}
 
 var fieldIDToName_CreateSecKillRequest = map[int16]string{
 	1: "item_id",
 	2: "amount",
 	3: "start_time",
 	4: "end_time",
+	5: "token",
 }
 
 func (p *CreateSecKillRequest) IsSetAmount() bool {
@@ -753,6 +762,7 @@ func (p *CreateSecKillRequest) Read(iprot thrift.TProtocol) (err error) {
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetItemId bool = false
+	var issetToken bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -801,6 +811,15 @@ func (p *CreateSecKillRequest) Read(iprot thrift.TProtocol) (err error) {
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetToken = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		default:
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
@@ -816,6 +835,11 @@ func (p *CreateSecKillRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	if !issetItemId {
 		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetToken {
+		fieldId = 5
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -880,6 +904,17 @@ func (p *CreateSecKillRequest) ReadField4(iprot thrift.TProtocol) error {
 	p.EndTime = _field
 	return nil
 }
+func (p *CreateSecKillRequest) ReadField5(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Token = _field
+	return nil
+}
 
 func (p *CreateSecKillRequest) Write(oprot thrift.TProtocol) (err error) {
 
@@ -902,6 +937,10 @@ func (p *CreateSecKillRequest) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField4(oprot); err != nil {
 			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
 			goto WriteFieldError
 		}
 	}
@@ -996,6 +1035,23 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
+func (p *CreateSecKillRequest) writeField5(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("token", thrift.STRING, 5); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Token); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
 func (p *CreateSecKillRequest) String() string {
 	if p == nil {
 		return "<nil>"
@@ -1020,6 +1076,9 @@ func (p *CreateSecKillRequest) DeepEqual(ano *CreateSecKillRequest) bool {
 		return false
 	}
 	if !p.Field4DeepEqual(ano.EndTime) {
+		return false
+	}
+	if !p.Field5DeepEqual(ano.Token) {
 		return false
 	}
 	return true
@@ -1064,6 +1123,13 @@ func (p *CreateSecKillRequest) Field4DeepEqual(src *int64) bool {
 		return false
 	}
 	if *p.EndTime != *src {
+		return false
+	}
+	return true
+}
+func (p *CreateSecKillRequest) Field5DeepEqual(src string) bool {
+
+	if strings.Compare(p.Token, src) != 0 {
 		return false
 	}
 	return true

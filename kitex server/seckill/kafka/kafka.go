@@ -37,14 +37,15 @@ func StartKafkaConsumer() {
 		}
 		productID := request["productID"]
 		orderID := request["orderID"]
+		intProductID, err := strconv.ParseInt(productID, 10, 64)
 		//2.2.扣减数据库中的库存
-		status := dao.DeductStockInMysql(productName)
+		status := dao.DeductStockInMysql(intProductID)
 		//2.3.写入订单状态（下单成功/失败）到数据库
 		if status != emptyStatus {
-			status = dao.AddOrderStatusToMysql(orderID, productName, "failed")
+			status = dao.AddOrderStatusToMysql(orderID, intProductID, "failed")
 			log.Fatal("dao.DeductStockInMysql error: ", status)
 		} else {
-			status = dao.AddOrderStatusToMysql(orderID, productName, "success")
+			status = dao.AddOrderStatusToMysql(orderID, intProductID, "success")
 		}
 	}
 }

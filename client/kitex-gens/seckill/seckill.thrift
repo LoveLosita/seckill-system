@@ -19,6 +19,7 @@ struct CreateSecKillRequest { #创建秒杀请求
   2: optional i64 amount
   3: optional i64 start_time
   4: optional i64 end_time
+  5: required string token
 }
 
 struct CreateSecKillResponse { #创建秒杀响应

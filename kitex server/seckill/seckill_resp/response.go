@@ -19,4 +19,16 @@ var (
 		Code:    "42002",
 		Message: "out of stock",
 	}
+	NotInSecKillTime = seckill.Status{ //不在秒杀时间范围内
+		Code:    "42003",
+		Message: "not in seckill time range",
+	}
+	OrderNotFound = seckill.Status{ //订单不存在
+		Code:    "42004",
+		Message: "order not found",
+	}
+	InvalidToken = seckill.Status{ //token无效
+		Code:    "42005",
+		Message: "invalid token",
+	}
 )
