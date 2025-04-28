@@ -101,7 +101,7 @@ func DeductStockInRedis(itemID int64) seckill.Status {
 func AddOrderStatusToMysql(orderID string, productID int64, status string) seckill.Status {
 	var order model.Order
 	order.OrderNumber = orderID
-	order.ProductName = strconv.FormatInt(productID, 10)
+	order.ProductID = strconv.FormatInt(productID, 10)
 	order.Status = status
 	result := inits.Db.Table("orders").Create(&order)
 	if result.Error != nil {

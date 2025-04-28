@@ -3,7 +3,9 @@ package api
 import (
 	init_client "client/init"
 	"client/kitex-gens/seckill/kitex_gen/seckill"
+	"client/model"
 	"client/response"
+	"client/utils"
 	"context"
 	"errors"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -12,7 +14,8 @@ import (
 )
 
 func CreateSecKillEventHandler(ctx context.Context, c *app.RequestContext) {
-	var event seckill.CreateSecKillRequest
+	var event model.JsonSecKillEvent
+	var reqEvent seckill.CreateSecKillRequest
 	//1.从请求中获取参数
 	token := c.GetHeader("Authorization")
 	err := c.BindJSON(&event)
@@ -24,7 +27,17 @@ func CreateSecKillEventHandler(ctx context.Context, c *app.RequestContext) {
 	//2.调用服务端接口
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5) //设置超时时间
 	defer cancel()
-	resp, err := init_client.NewSecKillClient.CreateSecKill(ctx, &event)
+	sTime, eTime, err := utils.StrTimeToUnix(event.StartTime, event.EndTime)
+	if err != nil {
+		c.JSON(consts.StatusInternalServerError, response.InternalError(err))
+		return
+	}
+	reqEvent.ItemId = event.ItemId
+	reqEvent.StartTime = &sTime
+	reqEvent.EndTime = &eTime
+	reqEvent.Token = string(token)
+	reqEvent.Amount = &event.Amount
+	resp, err := init_client.NewSecKillClient.CreateSecKill(ctx, &reqEvent)
 	if err != nil {
 		if errors.Is(err, context.DeadlineExceeded) {
 			c.JSON(consts.StatusInternalServerError, response.RpcServerConnectTimeOut)

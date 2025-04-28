@@ -26,9 +26,10 @@ func (s *SecKillServiceImpl) SecKill(ctx context.Context, req *seckill.SecKillRe
 		return &seckill.SecKillResponse{Status: &status}, nil
 	}
 	//1.2.检查当前时间是否在秒杀活动的开始时间和结束时间之间
+	loc, _ := time.LoadLocation("Asia/Shanghai")
 	nowTimeUnix := time.Now().Unix()
-	eventStartTimeUnix, _ := time.Parse("2006-01-02 15:04:05", event.StartTime)
-	eventEndTimeUnix, _ := time.Parse("2006-01-02 15:04:05", event.EndTime)
+	eventStartTimeUnix, _ := time.ParseInLocation("2006-01-02 15:04:05", event.StartTime, loc)
+	eventEndTimeUnix, _ := time.ParseInLocation("2006-01-02 15:04:05", event.EndTime, loc)
 	//1.3.如果不在范围内，返回秒杀活动未开始或已结束
 	if nowTimeUnix < eventStartTimeUnix.Unix() || nowTimeUnix > eventEndTimeUnix.Unix() {
 		return &seckill.SecKillResponse{Status: &seckill_resp.NotInSecKillTime}, nil
@@ -50,7 +51,7 @@ func (s *SecKillServiceImpl) SecKill(ctx context.Context, req *seckill.SecKillRe
 		retErr := seckill_resp.InternalErr(err)
 		return &seckill.SecKillResponse{Status: &retErr}, nil
 	}
-	return &seckill.SecKillResponse{Status: &seckill_resp.Ok}, nil
+	return &seckill.SecKillResponse{Status: &seckill_resp.Ok, OrderId: &orderID}, nil
 }
 
 // CreateSecKill implements the SecKillServiceImpl interface.
@@ -65,8 +66,9 @@ func (s *SecKillServiceImpl) CreateSecKill(ctx context.Context, req *seckill.Cre
 	}
 	//2.创建秒杀活动
 	event.ItemID = req.ItemId
-	t1 := time.Unix(*req.StartTime, 0)
-	t2 := time.Unix(*req.EndTime, 0)
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+	t1 := time.Unix(*req.StartTime, 0).In(loc)
+	t2 := time.Unix(*req.EndTime, 0).In(loc)
 	timeStr1 := t1.Format("2006-01-02 15:04:05")
 	timeStr2 := t2.Format("2006-01-02 15:04:05")
 	event.StartTime = timeStr1
@@ -91,6 +93,6 @@ func (s *SecKillServiceImpl) GetOrderStatus(ctx context.Context, req *seckill.Ge
 		Status:      &seckill_resp.Ok,
 		OrderStatus: &orderStatus.Status,
 		OrderId:     &orderStatus.OrderNumber,
-		ItemName:    &orderStatus.ProductName,
+		ItemName:    &orderStatus.ProductID,
 	}, nil
 }

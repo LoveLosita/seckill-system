@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 type CreateSecKillEvent struct {
 	ItemID    int64  `json:"item_id"`
 	StartTime string `json:"start_time"`
@@ -8,9 +10,9 @@ type CreateSecKillEvent struct {
 }
 
 type Order struct {
-	OrderNumber string `json:"order_number"`
-	ProductName string `json:"product_name"`
-	Status      string `json:"status"`
-	CreatedAt   string `json:"created_at"`
-	UpdatedAt   string `json:"updated_at"`
+	OrderNumber string    `json:"order_number"`
+	ProductID   string    `json:"product_id"`
+	Status      string    `json:"status"`
+	CreatedAt   time.Time `json:"created_at" gorm:"column:created_at;autoCreateTime"`
+	UpdatedAt   time.Time `json:"updated_at" gorm:"column:updated_at;autoUpdateTime"`
 }

@@ -9,7 +9,7 @@ import (
 	"net"
 )
 
-func main() {
+func Start() {
 	//1.连接数据库
 	err := inits.ConnectDB()
 	if err != nil {

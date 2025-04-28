@@ -16,6 +16,10 @@ func Start() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	err = init_client.InitSecKillSvClient()
+	if err != nil {
+		log.Fatal(err)
+	}
 	//2.启动路由
 	routers.RegisterRouters()
 }
