@@ -33,13 +33,130 @@
 
 https://ess5f7hjbp.apifox.cn
 
-# 4.返回定义
+# 4.压力测试
 
-略。
+按照如下格式，设置抢购活动，同时使用python代码测试并发性能：
 
-# 5.快速开始
+```json
+{
+    "item_id": 1,
+    "amount": 50,
+    "start_time": "2025-04-29 18:30:00",
+    "end_time": "2025-04-29 21:00:00"
+}
+```
 
-略。
+代码：
+
+```python
+import asyncio
+import aiohttp
+import random
+import time
+import json
+
+# 配置项
+URL = "http://127.0.0.1:8888/seckill/buy"
+ITEM_ID = 1
+TOTAL_REQUESTS = 300
+# 模拟“前有后有”的分布，随机延迟0~1秒开始请求
+MAX_START_DELAY = 1.0
+TIMEOUT = 5  # 单个请求超时（秒）
+
+async def buy(session, idx, results):
+    # 随机延迟，让用户“前有后有”到达
+    await asyncio.sleep(random.uniform(0, MAX_START_DELAY))
+    payload = {"item_id": ITEM_ID}
+    try:
+        async with session.post(URL, json=payload, timeout=TIMEOUT) as resp:
+            text = await resp.text()
+            # 尝试解析 JSON
+            try:
+                data = json.loads(text)
+            except json.JSONDecodeError:
+                data = {"raw": text}
+            # 实时打印返回结果
+            print(f"[{idx:03d}] -> {data}")
+            # 判断是否成功
+            code = data.get("status", {}).get("code")
+            success = 1 if code == "10000" or "42002" else 0
+    except Exception as e:
+        print(f"[{idx:03d}] -> ERROR: {e}")
+        success = 0
+    results.append(success)
+
+async def main():
+    t0 = time.time()
+    results = []
+    # 限制最多 TOTAL_REQUESTS 个并发任务
+    sem = asyncio.Semaphore(TOTAL_REQUESTS)
+    async with aiohttp.ClientSession() as session:
+        tasks = []
+        for i in range(1, TOTAL_REQUESTS + 1):
+            # 每个任务都在 semaphore 控制下执行
+            async def sem_task(idx):
+                async with sem:
+                    await buy(session, idx, results)
+            tasks.append(asyncio.create_task(sem_task(i)))
+        # 等待所有请求完成
+        await asyncio.gather(*tasks)
+    t1 = time.time()
+
+    # 汇总成功率
+    success_count = sum(results)
+    print("\n=== 测试结果 ===")
+    print(f"总请求数: {TOTAL_REQUESTS}")
+    print(f"成功请求数: {success_count}")
+    print(f"失败请求数: {TOTAL_REQUESTS - success_count}")
+    print(f"成功率: {success_count / TOTAL_REQUESTS * 100:.2f}%")
+    print(f"总耗时: {t1 - t0:.2f}s")
+
+if __name__ == "__main__":
+    # 运行前请确保已安装 aiohttp：pip install aiohttp
+    asyncio.run(main())
+```
+
+以下是测试结果：
+
+可以看到，在库存充足的前半段，清一色的抢购成功：
+![](images\1.png)
+
+在库存即将耗尽的中段，开始体现**“先来不一定先抢到”**（从订单号的非升序排列也可以看出），抢到的和没抢到的混在一起:
+
+![](images\2.png)
+
+在后半段，则是清一色的没抢到，证明确实是来晚了：
+
+![](images\3.png)
+
+最后看数据统计，返回结果只有抢到和未抢到，**综合请求成功率为100%**，说明这套系统足够稳定：
+
+![](images\4.png)
+
+当然上面的库存只有50，~~也就是被50系显卡耍猴时的情况~~，接下来看看更适合现实的情况：把库存放大到10000，把抢购人数放大到20000。
+
+```json
+{
+    "item_id": 5,
+    "amount": 10000,
+    "start_time": "2025-04-29 18:30:00",
+    "end_time": "2025-04-29 21:00:00"
+}
+```
+
+go这边收消息都收出了残影：
+
+![](images\5.png)
+
+估计是我电脑内存吃满了的缘故（一共才16G），成功率出奇的低，应该是配置问题：
+![](images\6.png)
+
+真正检验高并发的情况时，就得换台好点的机器了。并发3000成功率100%是我手上这台机器的极限了，升级内存后应该好点。
+
+# 5.后续可以改进的点
+
+1. 高并发时，如果硬件不够，`redis`和`mysql`里面的库存会对不上，导致货没卖完（目前还没出现超售的情况，不过也不太可能，因为`redis`库存都没扣的话，怎么可能进行后面`mysql`的步骤呢）。如何建立高并发下的补偿机制值得考虑。
+2. 游客直接购买有些危险了，可以考虑加入oauth，再将用户等级分层。
 
 # 6.结语
 
